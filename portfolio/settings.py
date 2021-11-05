@@ -41,11 +41,13 @@ INSTALLED_APPS = [
     'rest_framework',
     'user',
     'api',
+    'ckeditor',
     'corsheaders',
     'dj_rest_auth',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
 ]
+CKEDITOR_UPLOAD_PATH = 'content/ckeditor/'
 REST_USE_JWT = True
 JWT_AUTH_COOKIE = 'my-app-auth'
 JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
