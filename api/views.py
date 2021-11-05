@@ -1,0 +1,36 @@
+from django.shortcuts import render
+from rest_framework import generics, viewsets
+from rest_framework.views import APIView
+from .serializers import TestSerializer
+from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework import status, views
+from rest_framework.response import Response
+from django.contrib.auth import authenticate, login, logout
+from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
+from .models import Test
+import json
+from django.contrib.auth.models import User
+
+
+class TestView(viewsets.ModelViewSet):
+    serializer_class=TestSerializer
+    permission_classes= [IsAuthenticated]
+    
+    def get_queryset(self):
+        return Test.objects.filter(user=self.request.user.id)
+    
+    def update(self, request, pk):
+        resume=json.loads(json.dumps(request.data))['resume']
+        Test.objects.update(id=pk, resume=resume)
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+class OpenView(viewsets.ModelViewSet):
+    serializer_class=TestSerializer
+    permission_classes= [AllowAny]
+    
+    def get_queryset(self):
+        return Test.objects.filter(user=User.objects.get(username=self.kwargs['name']))
+
+    
+
+
