@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from rest_framework import generics, viewsets
 from rest_framework.views import APIView
 from .serializers import TestSerializer
@@ -10,7 +10,7 @@ from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 from .models import Test
 import json
 from django.contrib.auth.models import User
-
+from django.contrib.auth.decorators import login_required
 
 class TestView(viewsets.ModelViewSet):
     serializer_class=TestSerializer
@@ -32,4 +32,6 @@ class OpenView(viewsets.ModelViewSet):
         return Test.objects.filter(user=User.objects.get(username=self.kwargs['name']))
 
 def index(request):
+    if request.user.is_authenticated:
+     return redirect('admin:index')
     return render(request, 'api/index.html')
