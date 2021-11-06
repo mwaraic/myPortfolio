@@ -9,7 +9,7 @@ from django.contrib.auth import authenticate, login, logout
 from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 from .models import Test
 import json
-from django.contrib.auth.models import User
+from user.models import User
 from django.contrib.auth.decorators import login_required
 
 class TestView(viewsets.ModelViewSet):
@@ -29,7 +29,7 @@ class OpenView(viewsets.ModelViewSet):
     permission_classes= [AllowAny]
     
     def get_queryset(self):
-        return Test.objects.filter(user=User.objects.get(username=self.kwargs['name']))
+        return Test.objects.filter(user=User.objects.get(user_name=self.kwargs['name']))
 
 def index(request):
     if request.user.is_authenticated:
