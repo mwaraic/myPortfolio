@@ -31,6 +31,5 @@ class OpenView(viewsets.ModelViewSet):
     def get_queryset(self):
         return Test.objects.filter(user=User.objects.get(username=self.kwargs['name']))
 
-    
-
-
+def index(request):
+    return render(request, 'api/index.html')
