@@ -10,7 +10,8 @@ from .serializers import CustomUserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.permissions import AllowAny
 from .serializers import CustomTokenObtainPairSerializer
-
+from api.models import Test
+from .models import User
 
 class CustomTokenObtainPairView(TokenObtainPairView):
     # Replace the serializer with your custom
@@ -25,6 +26,7 @@ class CustomUserCreate(APIView):
             user = serializer.save()
             if user:
                 json = serializer.data
+                Test.objects.create(user=User.objects.get(user_name=user.user_name), resume='')
                 return Response(json, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 

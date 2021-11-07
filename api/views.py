@@ -3,10 +3,8 @@ from rest_framework import generics, viewsets
 from rest_framework.views import APIView
 from .serializers import TestSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
-from rest_framework import status, views
+from rest_framework import status
 from rest_framework.response import Response
-from django.contrib.auth import authenticate, login, logout
-from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 from .models import Test
 import json
 from user.models import User
@@ -20,7 +18,7 @@ class TestView(viewsets.ModelViewSet):
         return Test.objects.filter(user=self.request.user.id)
     
     def update(self, request, pk):
-        resume=json.loads(json.dumps(request.data))['resume']
+        resume=request.data['resume']
         Test.objects.update(id=pk, resume=resume)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
