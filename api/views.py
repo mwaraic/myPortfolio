@@ -20,6 +20,7 @@ class TestView(viewsets.ModelViewSet):
     
     def update(self, request, pk):
         resume=json.loads(json.dumps(request.data))['resume']
+        Test.objects.filter(id=pk).update(resume=resume)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class OpenView(viewsets.ModelViewSet):
