@@ -5,6 +5,7 @@ from .serializers import TestSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework import status
 from rest_framework.response import Response
+from rest_framework.parsers import FileUploadParser, MultiPartParser, FormParser
 from .models import Test
 import json
 from user.models import User
@@ -18,8 +19,11 @@ class TestView(viewsets.ModelViewSet):
         return Test.objects.filter(user=self.request.user.id)
     
     def update(self, request, pk):
-        resume=request.data['resume']
-        Test.objects.update(id=pk, resume=resume)
+        resume=json.loads(json.dumps(request.data))['resume']
+        try:
+           Test.objects.update(id=pk, resume=resume)
+        except:
+           return Response(status=status.HTTP_100_CONTINUE)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class OpenView(viewsets.ModelViewSet):
