@@ -20,10 +20,6 @@ class TestView(viewsets.ModelViewSet):
     
     def update(self, request, pk):
         resume=json.loads(json.dumps(request.data))['resume']
-        try:
-           Test.objects.update(id=pk, resume=resume)
-        except:
-           return Response(status=status.HTTP_100_CONTINUE)
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 class OpenView(viewsets.ModelViewSet):
