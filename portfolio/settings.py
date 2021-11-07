@@ -47,7 +47,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
 ]
-CKEDITOR_UPLOAD_PATH = 'content/ckeditor/'
+CKEDITOR_UPLOAD_PATH = "uploads/"
 REST_USE_JWT = True
 JWT_AUTH_COOKIE = 'my-app-auth'
 JWT_AUTH_REFRESH_COOKIE = 'my-refresh-token'
@@ -134,19 +134,6 @@ TEMPLATES = [
     
 ]
 
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-
-# Used to authenticate with S3
-AWS_ACCESS_KEY_ID = os.environ.get('BUCKETEER_AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('BUCKETEER_AWS_SECRET_ACCESS_KEY')
-
-# Configure which endpoint to send files to, and retrieve files from.
-AWS_STORAGE_BUCKET_NAME = 'bucketeer-d1a7f670-ca4a-433c-924e-ec87ef501638'
-AWS_S3_REGION_NAME = 'us-east-1'
-
-
-
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
@@ -202,10 +189,16 @@ django_heroku.settings(locals())
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
+STATIC_ROOT =  os.path.join(BASE_DIR, 'static')
 
-MEDIA_ROOT = 'media'
-MEDIA_URL='http://' + AWS_STORAGE_BUCKET_NAME + '.s3.amazonaws.com/'
-ADMIN_MEDIA_PREFIX = MEDIA_URL + 'admin/'
+#--------------------------------------------------
+STATIC_URL = '/static/'
+#-----------------------------------------------------
+
+#STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+MEDIA_ROOT = os.path.join(BASE_DIR,"media")
+MEDIA_URL = "/media/"
+
 try:
     from .local_settings import *
 except ImportError:
